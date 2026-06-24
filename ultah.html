@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Selamat Ulang Tahun Dipta ✨</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <style>
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background-color: #0b0f19;
+        overflow-x: hidden;
+      }
+      .font-serif {
+        font-family: "Playfair Display", serif;
+      }
+      .no-scroll {
+        overflow: hidden;
+        height: 100vh;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px rgba(255, 255, 255, 0.08) solid;
+      }
+      .glow-text {
+        text-shadow: 0 0 20px rgba(244, 63, 94, 0.4);
+      }
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #0b0f19;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+      }
+      /* Efek Hover Polaroid */
+      .moment-card {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        opacity: 1 !important; /* Memaksa gambar wajib muncul */
+        transform: translateY(0) !important;
+      }
+    </style>
+  </head>
+  <body class="no-scroll text-slate-200 antialiased selection:bg-rose-500/30 selection:text-rose-200">
+    <audio id="bg-music" loop preload="auto">
+      <source src="Feast - Nina (Official Lyric Video).mp3" type="audio/mp3" />
+    </audio>
+
+    <button id="toggle-music" class="fixed top-6 right-6 z-50 glass-card p-3 rounded-full hover:bg-white/10 transition-all duration-300 active:scale-95 group">
+      <svg
+        id="music-icon"
+        class="w-5 h-5 text-rose-400 group-hover:text-rose-300 transition-colors"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 9l10.5-3m0 0v13.5m0-13.5L9 12m10.5 3.5v3.5m-10.5-6v6m0-6L3 15m0 0v3.5m0-3.5l6-3.5" />
+      </svg>
+    </button>
+
+    <canvas id="particleCanvas" class="fixed inset-0 pointer-events-none z-10 opacity-40"></canvas>
+
+    <div id="loading-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0b0f19] p-4 text-center">
+      <div class="max-w-md w-full space-y-6 glass-card p-8 md:p-10 rounded-3xl relative overflow-hidden border border-white/10">
+        <div class="absolute -top-10 -right-10 w-32 h-32 bg-rose-500/10 blur-3xl rounded-full"></div>
+
+        <div class="space-y-2">
+          <p class="text-xs uppercase tracking-[0.3em] text-rose-400/80 font-semibold">Special Digital Gift</p>
+          <h1 class="text-2xl font-serif text-white tracking-wide">Ada sebuah surat untukmu.</h1>
+        </div>
+
+        <div class="flex justify-center py-2">
+          <div class="w-28 h-28 rounded-full overflow-hidden p-1 bg-gradient-to-tr from-rose-500 to-amber-400 shadow-xl">
+            <img src="dipta-1.jpeg" alt="Dipta Profile" class="w-full h-full object-cover rounded-full bg-slate-800" />
+          </div>
+        </div>
+
+        <p class="text-xs text-slate-400 leading-relaxed max-w-xs mx-auto">Nyalakan volume perangkatmu sebelum membuka lembaran ini agar pesat hangatnya tersampaikan.</p>
+
+        <button
+          onclick="startApp()"
+          class="w-full bg-gradient-to-r from-rose-500 to-amber-500 text-white font-medium py-3.5 px-6 rounded-2xl shadow-lg shadow-rose-500/20 hover:shadow-rose-500/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+        >
+          Buka Lembaran Baru ✉️
+        </button>
+      </div>
+    </div>
+
+    <div id="main-content" class="hidden relative z-20">
+      <section id="pembuka" class="min-h-screen flex items-center justify-center p-4 relative">
+        <div class="glass-card max-w-2xl text-center p-8 md:p-16 rounded-[2.5rem] space-y-8 relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-b from-rose-500/5 via-transparent to-transparent"></div>
+          <div class="space-y-4">
+            <span class="inline-block px-4 py-1.5 bg-rose-500/10 text-rose-400 text-xs font-semibold uppercase tracking-widest rounded-full">Hari Bahagia</span>
+            <h2 class="text-4xl md:text-6xl font-serif font-semibold text-white tracking-tight glow-text leading-tight">
+              Selamat Ulang Tahun,<br /><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-amber-300">Dipta ✨</span>
+            </h2>
+          </div>
+          <p class="text-base md:text-lg text-slate-300/90 leading-relaxed font-light">
+            Hari ini adalah ruang waktu yang sepenuhnya milikmu. Gulir perlahan, dan mari kita lihat sedikit goresan kisah yang dirangkum khusus untuk merayakan kehadiranmu.
+          </p>
+          <div class="pt-4 animate-pulse flex flex-col items-center text-xs tracking-widest uppercase text-slate-500">
+            <span>Gulir ke bawah</span>
+            <span class="text-lg mt-1">↓</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="ucapan" class="min-h-screen flex items-center justify-center p-4 py-24 relative">
+        <div class="glass-card max-w-3xl p-8 md:p-16 rounded-[2.5rem] space-y-8 relative">
+          <div class="text-4xl font-serif text-amber-300/40 text-center">“</div>
+          <div class="space-y-6 text-slate-300 text-base md:text-lg leading-relaxed font-light text-center">
+            <p class="ucapan-paragraf">
+              Hai Dipta, selamat bertambah usia. Di hari yang spesial ini, aku cuma mau bilang terima kasih banyak sudah berjuang sejauh ini dan menjadi versi terbaik dari dirimu sendiri.
+            </p>
+            <p class="ucapan-paragraf">
+              Semoga di tahun-tahun ke depan, langkahmu selalu diringankan, pundakmu selalu dikuatkan, dan hatimu selalu dipenuhi ketenangan yang luar biasa. Bahagia selalu ya, Dipta!
+            </p>
+          </div>
+          <div class="text-4xl font-serif text-amber-300/40 text-center">”</div>
+          <div class="text-center text-xs uppercase tracking-widest text-rose-400 font-semibold">— Dariku, untukmu</div>
+        </div>
+      </section>
+
+      <section id="moments" class="min-h-screen flex flex-col items-center justify-center p-4 py-24 bg-gradient-to-b from-transparent via-rose-950/10 to-transparent">
+        <div class="max-w-4xl w-full space-y-12">
+          <div class="text-center space-y-2">
+            <span class="text-xs uppercase tracking-widest text-amber-400 font-semibold">Visual Memory</span>
+            <h3 class="text-3xl font-serif text-white">Lembaran Cerita Kita 📸</h3>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 px-4">
+            <div class="moment-card bg-white p-4 pb-8 shadow-2xl rounded-sm -rotate-3 hover:rotate-0 hover:scale-105 cursor-pointer text-slate-700">
+              <div class="aspect-square bg-slate-200 overflow-hidden mb-4">
+                <img src="dipta-5.jpg" alt="Moment 1" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+              </div>
+              <p class="font-serif text-center text-sm italic">Sok sigma aw3okwokwo</p>
+            </div>
+
+            <div class="moment-card bg-white p-4 pb-8 shadow-2xl rounded-sm rotate-2 hover:rotate-0 hover:scale-105 cursor-pointer text-slate-700">
+              <div class="aspect-square bg-slate-200 overflow-hidden mb-4">
+                <img src="dipta-3.jpeg" alt="Moment 2" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+              </div>
+              <p class="font-serif text-center text-sm italic">anjay photobooth</p>
+            </div>
+
+            <div class="moment-card bg-white p-4 pb-8 shadow-2xl rounded-sm -rotate-1 hover:rotate-0 hover:scale-105 cursor-pointer text-slate-700">
+              <div class="aspect-square bg-slate-200 overflow-hidden mb-4">
+                <img src="dipta-4.jpeg" alt="Moment 3" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+              </div>
+              <p class="font-serif text-center text-sm italic">Turu dulu.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="kado-section" class="min-h-screen flex flex-col items-center justify-center p-4 relative">
+        <div class="max-w-md w-full text-center space-y-8">
+          <div class="space-y-2">
+            <span class="text-xs uppercase tracking-widest text-rose-400 font-semibold">Special Box</span>
+            <h3 class="text-2xl font-serif text-white">Nih gw kasih 1 kado🎁</h3>
+          </div>
+
+          <div class="flex justify-center py-6">
+            <button
+              onclick="bukaKado()"
+              id="gift-box"
+              class="w-32 h-32 bg-gradient-to-br from-rose-500 to-amber-500 rounded-3xl flex items-center justify-center text-6xl shadow-xl shadow-rose-500/20 hover:scale-110 active:scale-95 transition-all duration-300 animate-bounce cursor-pointer relative group"
+            >
+              <span class="group-hover:rotate-12 transition-transform inline-block">🎁</span>
+              <span class="absolute -top-2 -right-2 flex h-4 w-4">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-4 w-4 bg-sky-500"></span>
+              </span>
+            </button>
+          </div>
+          <p class="text-xs text-slate-400">Klik kado di atas untuk membukanya.</p>
+        </div>
+
+        <div id="kado-modal" class="fixed inset-0 z-50 bg-[#0b0f19]/80 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+          <div class="glass-card max-w-sm w-full p-8 rounded-3xl text-center border border-amber-500/30 shadow-2xl space-y-6 relative translate-y-10 transition-transform duration-300" id="modal-card">
+            <div class="text-4xl">👑</div>
+            <h4 class="text-xl font-serif text-amber-300">Hadiah Utama: "Kupon Bahagia"</h4>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              Kupon ini hanya bisa dipakai 1 kali yak. Dapat ditukarkan kapan saja dengan: Satu hari penuh jalan-jalan, makanan favoritmu, atau sekadar teman mengobrol saat duniamu sedang terasa
+              berat.(kecuali kalau gw lagi sibuk gabisa dipake yak hihi)
+            </p>
+            <div class="border-t border-white/10 pt-4">
+              <p class="text-xs text-rose-400 font-mono tracking-widest uppercase">CODE: HAPPY-DIPTA-5B</p>
+            </div>
+            <button onclick="tutupKado()" class="w-full bg-white/10 hover:bg-white/20 text-white text-sm py-3 rounded-xl transition-colors">Simpan & Tutup 🤍</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="penutup" class="min-h-screen flex items-center justify-center p-4 relative">
+        <div class="max-w-md text-center space-y-6">
+          <h3 class="text-2xl font-serif text-white">Cheers to another beautiful year!</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Semoga hari ini penuh dengan senyuman hangat, pelukan tulus, dan kegembiraan.</p>
+          <div class="pt-6">
+            <button
+              onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+              class="text-xs uppercase tracking-widest text-slate-400 hover:text-white transition-colors glass-card px-6 py-3 rounded-xl"
+            >
+              Kembali ke Atas ↑
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      const bgMusic = document.getElementById("bg-music");
+      let isMusicPlaying = false;
+
+      // Kontrol Tombol Musik
+      document.getElementById("toggle-music").addEventListener("click", () => {
+        const icon = document.getElementById("music-icon");
+        if (isMusicPlaying) {
+          bgMusic.pause();
+          icon.style.opacity = "0.4";
+        } else {
+          bgMusic.play().catch((e) => console.log("Audio terblokir"));
+          icon.style.opacity = "1";
+        }
+        isMusicPlaying = !isMusicPlaying;
+      });
+
+      // MASUK HALAMAN UTAMA
+      function startApp() {
+        try {
+          bgMusic
+            .play()
+            .then(() => {
+              isMusicPlaying = true;
+            })
+            .catch((err) => console.log("Autoplay ditahan browser"));
+        } catch (e) {}
+
+        // 1. Langsung hapus kelas hidden secara total
+        document.getElementById("main-content").classList.remove("hidden");
+        document.body.classList.remove("no-scroll");
+
+        // 2. Transisi loading screen memudar
+        gsap.to("#loading-screen", {
+          opacity: 0,
+          y: -30,
+          duration: 0.5,
+          ease: "power2.inOut",
+          onComplete: () => {
+            document.getElementById("loading-screen").style.display = "none";
+            initIntroAnimations();
+          },
+        });
+
+        initParticles();
+      }
+
+      // Animasi Pembuka Sederhana (Hanya untuk bagian awal)
+      function initIntroAnimations() {
+        gsap.from("#pembuka .glass-card", { scale: 0.95, opacity: 0, duration: 1, ease: "power2.out" });
+      }
+
+      // FUNGSI INTERAKTIF KADO (POP-UP)
+      function bukaKado() {
+        const modal = document.getElementById("kado-modal");
+        const card = document.getElementById("modal-card");
+        modal.classList.remove("pointer-events-none");
+        modal.classList.add("opacity-100");
+        gsap.to(card, { y: 0, scale: 1, duration: 0.4, ease: "back.out(1.4)" });
+      }
+
+      function tutupKado() {
+        const modal = document.getElementById("kado-modal");
+        const card = document.getElementById("modal-card");
+        modal.classList.add("pointer-events-none");
+        modal.classList.remove("opacity-100");
+        gsap.to(card, { y: 20, scale: 0.95, duration: 0.2 });
+      }
+
+      // Particle System Background
+      function initParticles() {
+        const canvas = document.getElementById("particleCanvas");
+        const ctx = canvas.getContext("2d");
+        let particles = [];
+
+        function resize() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", resize);
+        resize();
+
+        class Particle {
+          constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 0.5;
+            this.speedX = Math.random() * 0.2 - 0.1;
+            this.speedY = Math.random() * 0.2 - 0.1;
+            this.alpha = Math.random() * 0.4 + 0.2;
+          }
+          update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+          }
+          draw() {
+            ctx.save();
+            ctx.globalAlpha = this.alpha;
+            ctx.fillStyle = "#f43f5e";
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          }
+        }
+
+        for (let i = 0; i < 40; i++) {
+          particles.push(new Particle());
+        }
+
+        function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          particles.forEach((p) => {
+            p.update();
+            p.draw();
+          });
+          requestAnimationFrame(animate);
+        }
+        animate();
+      }
+    </script>
+  </body>
+</html>
